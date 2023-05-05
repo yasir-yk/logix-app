@@ -1,0 +1,14 @@
+body{
+	background: lightblue;
+}
+#wrapper{
+	#header{
+		height: 100px;
+		background: #ccc;
+		.logo{
+			width: 150px;
+			height: 70px;
+			background: #000;
+		}
+	}
+}
