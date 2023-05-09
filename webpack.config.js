@@ -2,15 +2,16 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
   output: {
-    filename: 'main.js',
+    filename: 'js/main.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: ''
   },
-  mode: 'development',
+  mode: 'production',
   devtool: 'eval-cheap-module-source-map',
   devServer: {
     static: './dist',
@@ -49,8 +50,8 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'images/',
-              publicPath:'images/',
+              outputPath: 'drc/images/',
+              publicPath:'dist/images/',
               emitFile: true,
               esModule: false
 
@@ -83,13 +84,24 @@ module.exports = {
     ]
   },
   plugins: [
-     new HtmlWebpackPlugin({
-      template: './src/template.html',
-      filename: 'index.php'
-    }),
+    
     new MiniCssExtractPlugin({
-      filename: 'all.css'
+      filename: 'css/all.css'
     }),
-    new CleanWebpackPlugin()
+    new CopyPlugin({
+      patterns: [
+        { 
+          from: 'src/', to: './',
+          globOptions: {
+            ignore: ['**/index.js', '**/scss/**'], // Exclude index.js file
+          },
+         },
+      ],
+    }),
+    new CleanWebpackPlugin(),
+     new HtmlWebpackPlugin({
+      //template: './src/index.html',
+      //filename: 'index.php'
+    }),
   ]
 };
